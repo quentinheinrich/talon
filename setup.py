@@ -48,7 +48,7 @@ setup(name='talon',
           "regex>=1",
           "numpy",
           "scipy",
-          "scikit-learn>=0.20", # pickled versions of classifier, else rebuild. did move it to 0.20, maybe pbs with models
+          "scikit-learn>=0.16.1", # pickled versions of classifier, else rebuild. did move it to 0.20, maybe pbs with models
           'chardet>=1.0.1',
           'cchardet>=0.3.5',
           'cssselect',
