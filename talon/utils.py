@@ -4,7 +4,6 @@ from __future__ import absolute_import
 
 from random import shuffle
 
-import cchardet
 import chardet
 import html5lib
 import regex as re
@@ -49,7 +48,7 @@ def to_unicode(str_or_unicode, precise=False):
     If `precise` flag is True, tries to guess the correct encoding first.
     """
     if not isinstance(str_or_unicode, six.text_type):
-        encoding = quick_detect_encoding(str_or_unicode) if precise else 'utf-8'
+        encoding = "utf-8"
         return six.text_type(str_or_unicode, encoding, 'replace')
     return str_or_unicode
 
@@ -68,22 +67,6 @@ def detect_encoding(string):
     except Exception as e:
         pass
     return 'utf-8'
-
-
-def quick_detect_encoding(string):
-    """
-    Tries to detect the encoding of the passed string.
-
-    Uses cchardet. Fallbacks to detect_encoding.
-    """
-    assert isinstance(string, bytes)
-    try:
-        detected = cchardet.detect(string)
-        if detected:
-            return detected.get('encoding') or detect_encoding(string)
-    except Exception as e:
-        pass
-    return detect_encoding(string)
 
 
 def to_utf8(str_or_unicode):

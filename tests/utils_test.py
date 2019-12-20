@@ -2,7 +2,6 @@
 
 from __future__ import absolute_import
 
-import cchardet
 import six
 
 from talon import utils as u
@@ -37,34 +36,6 @@ def test_detect_encoding():
     with patch.object(u.chardet, 'detect') as detect:
         detect.side_effect = Exception
         eq_('utf-8', u.detect_encoding('qwe'.encode('utf8')).lower())
-
-
-def test_quick_detect_encoding():
-    eq_('ascii', u.quick_detect_encoding(b'qwe').lower())
-    ok_(u.quick_detect_encoding(
-        u'Versi\xf3n'.encode('windows-1252')).lower() in [
-            'windows-1252', 'windows-1250'])
-    eq_('utf-8', u.quick_detect_encoding(u'привет'.encode('utf8')).lower())
-
-
-@patch.object(cchardet, 'detect')
-@patch.object(u, 'detect_encoding')
-def test_quick_detect_encoding_edge_cases(detect_encoding, cchardet_detect):
-    cchardet_detect.return_value = {'encoding': 'ascii'}
-    eq_('ascii', u.quick_detect_encoding(b"qwe"))
-    cchardet_detect.assert_called_once_with(b"qwe")
-
-    # fallback to detect_encoding
-    cchardet_detect.return_value = {}
-    detect_encoding.return_value = 'utf-8'
-    eq_('utf-8', u.quick_detect_encoding(b"qwe"))
-
-    # exception
-    detect_encoding.reset_mock()
-    cchardet_detect.side_effect = Exception()
-    detect_encoding.return_value = 'utf-8'
-    eq_('utf-8', u.quick_detect_encoding(b"qwe"))
-    ok_(detect_encoding.called)
 
 
 def test_html_to_text():
